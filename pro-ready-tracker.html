@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRO-READY · 8-Week Football Program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Semi+Condensed:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pitch:#0C120D;
+  --pitch-2:#111A12;
+  --card:#151F16;
+  --card-2:#1B271C;
+  --chalk:#EDF2E4;
+  --chalk-dim:#9BA88F;
+  --lime:#C8FF3E;
+  --lime-dim:#8FBF1E;
+  --amber:#FFB43E;
+  --red:#FF5E5E;
+  --line:rgba(237,242,228,.12);
+  --done:#5BE38A;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--pitch);
+  color:var(--chalk);
+  font-family:'Barlow Semi Condensed',sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200,255,62,.07), transparent),
+    repeating-linear-gradient(0deg, transparent 0 119px, rgba(237,242,228,.025) 119px 120px);
+  min-height:100vh;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 100px}
+
+/* ---------- HEADER ---------- */
+header{padding:48px 0 8px;position:relative}
+.kicker{
+  font-weight:700;letter-spacing:.35em;text-transform:uppercase;
+  font-size:.7rem;color:var(--lime);display:flex;align-items:center;gap:12px;
+}
+.kicker::before,.kicker::after{content:"";height:1px;width:36px;background:var(--lime);opacity:.5}
+h1{
+  font-family:'Anton',sans-serif;
+  font-size:clamp(3rem,9vw,5.2rem);
+  line-height:.95;letter-spacing:.01em;
+  text-transform:uppercase;margin:14px 0 6px;
+}
+h1 .accent{color:var(--lime)}
+.sub{color:var(--chalk-dim);font-size:1.05rem;max-width:60ch}
+.player-chip{
+  display:inline-flex;gap:8px;flex-wrap:wrap;margin-top:18px;
+}
+.player-chip span{
+  border:1px solid var(--line);border-radius:999px;padding:4px 14px;
+  font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--chalk-dim);
+}
+.player-chip span b{color:var(--lime);font-weight:700}
+
+/* ---------- SCOREBOARD ---------- */
+.scoreboard{
+  margin-top:32px;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;
+  position:relative;overflow:hidden;
+}
+.scoreboard::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(-45deg,transparent 0 14px, rgba(200,255,62,.03) 14px 28px);
+}
+.ring{width:96px;height:96px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg)}
+.ring .pct{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Anton',sans-serif;font-size:1.5rem;color:var(--lime);
+}
+.sb-right .sb-label{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--chalk-dim);font-weight:700}
+.sb-right .sb-big{font-family:'Anton',sans-serif;font-size:1.6rem;margin:2px 0 10px;text-transform:uppercase}
+.weekbar{display:flex;gap:5px}
+.weekbar i{
+  flex:1;height:8px;border-radius:4px;background:var(--card-2);border:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.weekbar i b{position:absolute;inset:0;background:var(--lime);transform-origin:left;display:block}
+
+/* ---------- PHASE STRIP ---------- */
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:22px 0 8px}
+.phase{
+  border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);
+  font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--chalk-dim);
+}
+.phase b{display:block;font-family:'Anton',sans-serif;font-size:.95rem;letter-spacing:.05em;color:var(--chalk);margin-bottom:2px;font-weight:400}
+.phase.active{border-color:var(--lime);background:linear-gradient(180deg,rgba(200,255,62,.10),transparent)}
+.phase.active b{color:var(--lime)}
+
+/* ---------- WEEK TABS ---------- */
+.tabs{display:flex;gap:8px;margin:26px 0 20px;flex-wrap:wrap}
+.tab{
+  font-family:'Anton',sans-serif;font-size:1.35rem;color:var(--chalk-dim);
+  width:52px;height:56px;border:1px solid var(--line);border-radius:10px;background:var(--card);
+  cursor:pointer;position:relative;transition:all .18s ease;
+  display:flex;align-items:center;justify-content:center;
+}
+.tab small{position:absolute;top:4px;left:7px;font-family:'Barlow Semi Condensed';font-size:.55rem;letter-spacing:.15em;font-weight:700;color:var(--chalk-dim)}
+.tab:hover{border-color:var(--lime-dim);color:var(--chalk)}
+.tab.on{background:var(--lime);color:var(--pitch);border-color:var(--lime)}
+.tab.on small{color:rgba(12,18,13,.6)}
+.tab .dot{position:absolute;bottom:5px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--done);display:none}
+.tab.complete .dot{display:block}
+.tab.on.complete .dot{background:var(--pitch)}
+
+/* ---------- WEEK HEADER ---------- */
+.week-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.week-title{font-family:'Anton',sans-serif;font-size:2rem;text-transform:uppercase}
+.week-title em{font-style:normal;color:var(--lime)}
+.week-focus{color:var(--chalk-dim);font-size:.95rem;max-width:62ch;margin-bottom:18px}
+
+/* ---------- SESSION CARDS ---------- */
+.session{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden;
+  transition:border-color .2s;
+}
+.session.done-card{border-color:rgba(91,227,138,.45)}
+.s-head{
+  display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;user-select:none;
+}
+.s-head:hover{background:var(--card-2)}
+.s-num{
+  font-family:'Anton',sans-serif;font-size:1.1rem;color:var(--pitch);
+  background:var(--lime);width:40px;height:40px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.session.done-card .s-num{background:var(--done)}
+.s-meta{flex:1;min-width:0}
+.s-title{font-weight:700;font-size:1.05rem;letter-spacing:.02em}
+.s-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:3px}
+.s-tags span{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border-radius:4px;border:1px solid var(--line);color:var(--chalk-dim)}
+.s-tags .t-loc{color:var(--amber);border-color:rgba(255,180,62,.35)}
+.s-tags .t-test{color:var(--red);border-color:rgba(255,94,94,.4)}
+.s-prog{font-size:.8rem;color:var(--chalk-dim);font-weight:600;white-space:nowrap}
+.s-prog.full{color:var(--done)}
+.chev{transition:transform .2s;color:var(--chalk-dim);flex-shrink:0}
+.session.open .chev{transform:rotate(180deg)}
+.s-body{display:none;padding:2px 18px 16px;border-top:1px solid var(--line)}
+.session.open .s-body{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+
+.block-label{
+  font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--lime);
+  margin:16px 0 8px;display:flex;align-items:center;gap:10px;
+}
+.block-label::after{content:"";flex:1;height:1px;background:var(--line)}
+.ex{
+  display:flex;gap:12px;align-items:flex-start;padding:9px 10px;border-radius:8px;cursor:pointer;
+  transition:background .12s;
+}
+.ex:hover{background:var(--card-2)}
+.ex input{display:none}
+.box{
+  width:20px;height:20px;border:2px solid var(--chalk-dim);border-radius:5px;flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.box svg{opacity:0;transform:scale(.5);transition:all .15s}
+.ex input:checked ~ .box{background:var(--done);border-color:var(--done)}
+.ex input:checked ~ .box svg{opacity:1;transform:scale(1)}
+.ex-text{flex:1}
+.ex input:checked ~ .ex-text{color:var(--chalk-dim);text-decoration:line-through;text-decoration-color:rgba(155,168,143,.5)}
+.ex-name{font-weight:600}
+.ex-det{font-size:.86rem;color:var(--chalk-dim)}
+.note{
+  margin-top:14px;padding:12px 14px;border-left:3px solid var(--amber);background:rgba(255,180,62,.06);
+  border-radius:0 8px 8px 0;font-size:.88rem;color:var(--chalk-dim);
+}
+.note b{color:var(--amber)}
+
+/* ---------- TESTS ---------- */
+.testgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:10px}
+.test{
+  background:var(--card-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+}
+.test label{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk-dim);display:block;margin-bottom:6px}
+.test .pair{display:flex;gap:8px}
+.test input{
+  width:100%;background:var(--pitch);border:1px solid var(--line);border-radius:7px;color:var(--chalk);
+  padding:8px 10px;font-family:inherit;font-size:.95rem;font-weight:600;
+}
+.test input:focus{outline:none;border-color:var(--lime)}
+.test .cap{font-size:.68rem;color:var(--chalk-dim);margin-top:5px}
+.test .delta{font-family:'Anton',sans-serif;font-size:.95rem;margin-top:6px;color:var(--lime)}
+
+/* ---------- FOUNDATION PANELS ---------- */
+.panel{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:14px 0;
+}
+.panel h3{font-family:'Anton',sans-serif;font-size:1.25rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px}
+.panel h3 span{color:var(--lime)}
+.panel p, .panel li{color:var(--chalk-dim);font-size:.95rem}
+.panel ul{list-style:none;margin-top:6px}
+.panel li{padding:5px 0 5px 22px;position:relative}
+.panel li::before{content:"▸";position:absolute;left:4px;color:var(--lime)}
+.section-title{
+  font-family:'Anton',sans-serif;font-size:1.6rem;text-transform:uppercase;margin:44px 0 4px;
+  display:flex;align-items:center;gap:14px;
+}
+.section-title::after{content:"";flex:1;height:1px;background:var(--line)}
+.section-sub{color:var(--chalk-dim);margin-bottom:14px;font-size:.95rem}
+
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--chalk-dim);font-size:.82rem;line-height:1.6}
+footer b{color:var(--chalk)}
+
+.reset{
+  background:none;border:1px solid var(--line);color:var(--chalk-dim);border-radius:8px;
+  padding:8px 16px;font-family:inherit;font-weight:600;cursor:pointer;font-size:.82rem;margin-top:14px;
+}
+.reset:hover{border-color:var(--red);color:var(--red)}
+@media(max-width:640px){
+  .phases{grid-template-columns:repeat(2,1fr)}
+  .scoreboard{grid-template-columns:1fr;text-align:center}
+  .ring{margin:0 auto}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">8-Week Pro Readiness Program</div>
+  <h1>Built for<br><span class="accent">The Back Line.</span></h1>
+  <p class="sub">A periodized 4-day/week program for a defensive player — on-ball work, speed &amp; plyometrics, repeated-sprint fitness, fascia elasticity, strength, and groin-injury armor. Tick off every drill; your progress saves automatically on this device.</p>
+  <div class="player-chip">
+    <span>Position <b>LB / CB / CDM</b></span>
+    <span>Age <b>19</b></span>
+    <span>Days <b>4 / week</b></span>
+    <span>Watch <b>Groin</b></span>
+  </div>
+</header>
+
+<div class="scoreboard">
+  <div class="ring">
+    <svg width="96" height="96" viewBox="0 0 96 96">
+      <circle cx="48" cy="48" r="42" fill="none" stroke="var(--card-2)" stroke-width="8"/>
+      <circle id="ringFg" cx="48" cy="48" r="42" fill="none" stroke="var(--lime)" stroke-width="8"
+        stroke-linecap="round" stroke-dasharray="263.9" stroke-dashoffset="263.9" style="transition:stroke-dashoffset .5s ease"/>
+    </svg>
+    <div class="pct" id="ringPct">0%</div>
+  </div>
+  <div class="sb-right">
+    <div class="sb-label">Program Progress</div>
+    <div class="sb-big" id="sbText">32 sessions to pro-ready</div>
+    <div class="weekbar" id="weekbar"></div>
+  </div>
+</div>
+
+<div class="phases" id="phaseStrip"></div>
+
+<div class="tabs" id="tabs"></div>
+
+<div id="weekView"></div>
+
+<h2 class="section-title">Benchmark Tests</h2>
+<p class="section-sub">Run these in Week 1 Day 1 (baseline) and again in Week 8 (retest). The card shows your improvement automatically.</p>
+<div class="testgrid" id="tests"></div>
+
+<h2 class="section-title">Non-Negotiables</h2>
+<div class="panel">
+  <h3>Every <span>Day</span></h3>
+  <ul>
+    <li><b>Sleep 8–9 hours.</b> This is where speed and muscle are actually built. Non-negotiable at 19.</li>
+    <li><b>Protein ~1.8 g per kg bodyweight</b>, spread over 3–4 meals. Carbs before and after field sessions.</li>
+    <li><b>Hydrate:</b> 2.5–3.5 L/day; add electrolytes on double-session or hot days.</li>
+    <li><b>Off days:</b> 20–30 min walk + 10 min juggling or wall touches + 8 min foam rolling (quads, adductors, calves, glutes). Light movement beats total rest.</li>
+  </ul>
+</div>
+<div class="panel">
+  <h3>Groin <span>Rules</span></h3>
+  <ul>
+    <li>The Copenhagen adductor exercise appears twice a week — it cuts groin injury risk by roughly 40% in footballers. Never skip it.</li>
+    <li>Mild muscle work-soreness after Copenhagens is normal for the first 2 weeks. <b>Sharp or pinching groin pain during sprinting or cutting is not</b> — stop the session, ice, and drop back one Copenhagen level.</li>
+    <li>Always complete the full warm-up before any sprint or change-of-direction work. Cold adductors are how re-injuries happen.</li>
+  </ul>
+</div>
+<div class="panel">
+  <h3>Fascia <span>Principles</span></h3>
+  <ul>
+    <li>Fascia adapts slowly (months, not days) — small, frequent, springy doses beat rare heavy ones. That's why elastic work appears in every Day 4.</li>
+    <li>Think <b>quiet, bouncy, effortless</b>: land silently, spend minimal time on the ground, let the tendons do the work.</li>
+    <li>Vary angles and directions — fascia responds to novelty. Never do bounds in only one line.</li>
+    <li>Foam rolling = hydration and glide for the tissue. Slow rolls, 30–60 s per area, breathe.</li>
+  </ul>
+</div>
+
+<footer>
+  <b>Read this before you start:</b> This program is a training plan, not medical advice. You've had a groin issue — if you feel sharp pain (not normal muscle burn) at any point, stop and see a physio before continuing. Progress the weights only when technique is perfect. If you miss a day, just do the next session — don't stack two hard days back-to-back.
+  <br><br>
+  <button class="reset" onclick="resetAll()">Reset all progress</button>
+</footer>
+
+</div>
+
+<script>
+/* =============== PROGRAM DATA =============== */
+const PHASES=[
+  {name:"Foundation",weeks:[1,2],tag:"WK 1–2",desc:"Movement quality, tissue prep, ball fundamentals"},
+  {name:"Build",weeks:[3,4,5],tag:"WK 3–5",desc:"Load up: strength, plyo volume, position drills, RSA"},
+  {name:"Peak",weeks:[6,7],tag:"WK 6–7",desc:"Max intensity: reactive speed, game-realistic work"},
+  {name:"Sharpen",weeks:[8],tag:"WK 8",desc:"Taper, stay sharp, retest everything"}
+];
+function phaseOf(w){return PHASES.find(p=>p.weeks.includes(w));}
+
+const WEEK_FOCUS={
+  1:"Set your baseline, groove perfect technique, and wake up the tissues. Every rep at controlled intensity — sprint work capped at 80–90%. Log your test numbers below.",
+  2:"Same structure, slightly more volume. Landings should already be quieter and touches cleaner. Copenhagens will stop being sore this week.",
+  3:"The build starts. Sprints go to 95%+, plyos gain height and distance, gym lifts get heavy (leave 2 reps in the tank), and RSA begins.",
+  4:"Highest volume week so far. Focus on weak-foot quality under fatigue — pros are judged on their worst touch, not their best.",
+  5:"Last build week. Push the gym numbers, attack the RSA sets, and make the long-passing block your signature — a CB/CDM who can hit a 40-yard diagonal is worth money.",
+  6:"Peak intensity. Everything is maximal but volume drops — quality over quantity. Depth jumps and reactive cuts demand full recovery between reps.",
+  7:"Second peak week. Game-speed everything. If you can find a small-sided game or futsal session this week, take it — nothing replaces chaos.",
+  8:"Taper and test. Short, sharp, fast sessions. Retest every benchmark and compare with Week 1. Then plan your next block — this is a career, not a program."
+};
+
+/* Exercise builder helpers */
+const CPH={
+  1:["Copenhagen adduction — short lever (knee on bench)","2×12 each side · bodyweight, 2s down"],
+  2:["Copenhagen adduction — short lever","2×15 each side · slow and controlled"],
+  3:["Copenhagen adduction — long lever (foot on bench)","3×10 each side"],
+  4:["Copenhagen adduction — long lever","3×10 each side"],
+  5:["Copenhagen adduction — long lever","3×10 each side · pause 1s at top"],
+  6:["Copenhagen adduction — long lever, slow eccentric","3×8 each side · 3s lowering"],
+  7:["Copenhagen adduction — long lever, slow eccentric","3×8 each side · 3s lowering"],
+  8:["Copenhagen adduction — maintenance","2×8 each side · smooth"]
+};
+function cph(w){return {n:CPH[w][0],d:CPH[w][1]};}
+
+function warmField(extra){return {label:"Warm-up · 12 min",items:[
+  {n:"Jog + dynamic mobility",d:"5 min easy jog, leg swings, open/close gates, walking lunges w/ twist"},
+  {n:"Adductor rock-backs + side lunges",d:"2×10 — mandatory groin prep before any sprint work"},
+  {n:"A-skips, high knees, butt kicks",d:"2×20 m each"},
+  {n:"Build-up strides",d:extra||"3×40 m building 60→85%"}
+]};}
+function warmGym(){return {label:"Warm-up · 10 min",items:[
+  {n:"Bike or row",d:"5 min easy, raise heart rate"},
+  {n:"Hip openers + adductor rock-backs",d:"90/90 switches ×10, rock-backs ×10"},
+  {n:"Glute bridge + bodyweight squats",d:"2×12 each"}
+]};}
+function cool(){return {label:"Cooldown · 8 min",items:[
+  {n:"Easy walk 3 min, then stretch",d:"Adductors, hip flexors, hamstrings, calves — 45 s each"}
+]};}
+function coolRoll(){return {label:"Cooldown · 10 min",items:[
+  {n:"Foam roll",d:"Quads, adductors, calves, glutes — 45–60 s each, slow"},
+  {n:"Long-chain stretch flow",d:"Down-dog → lunge → hamstring scoop, 5 slow rounds"}
+]};}
+
+/* Sessions per week: array of 4 session objects {title,tags,blocks,note} */
+function sessions(w){
+  const F=w<=2, B=w>=3&&w<=5, P=w===6||w===7, S=w===8;
+  const int=F?"80–90%":"95–100%";
+  const out=[];
+
+  /* ---- DAY 1: SPEED + PLYOS + BALL ---- */
+  if(S){
+    out.push({title:"Speed Sharpener + RETEST",tags:["Pitch","75 min","TEST DAY"],blocks:[
+      warmField("4×40 m building to 95%"),
+      {label:"Retest block — full rest between attempts",items:[
+        {n:"TEST: 20 m sprint",d:"3 attempts, keep the best. Log it below."},
+        {n:"TEST: 5-0-5 change of direction",d:"2 attempts each side. Log the best."},
+        {n:"TEST: Countermovement jump",d:"3 attempts — mark reach on a wall. Log it."}
+      ]},
+      {label:"Stay sharp",items:[
+        {n:"Sprints",d:"4×20 m @ 100%, walk-back recovery"},
+        {n:"Pogo hops",d:"2×10 — springy and quiet"},
+        {n:"Ball: one-touch wall passes",d:"2×30 fast rhythm, both feet"}
+      ]},cool()],
+      note:"<b>Test fresh.</b> Full recovery between attempts — you're measuring output, not fitness."});
+  } else {
+    const plyo=F?[
+      {n:"Pogo hops",d:"3×8 — stiff ankles, silent landings"},
+      {n:"Broad jumps",d:"3×3 — stick each landing for 2 s"},
+      {n:"Lateral line hops",d:"2×10 — low and quick"}
+    ]:B?[
+      {n:"Hurdle hops",d:"4×5 — continuous, minimal ground time"},
+      {n:"Lateral bounds",d:"3×5 each side — cover distance, stick or rebound"},
+      {n:"Box jumps",d:"4×5 — step down, never jump down"}
+    ]:[
+      {n:"Depth jumps (~40 cm box)",d:"3×5 — drop, land, explode up instantly"},
+      {n:"Single-leg bounds",d:"3×6 each leg — height + distance"},
+      {n:"Reactive hurdle hops",d:"3×5 — think 'hot floor'"}
+    ];
+    const spr=F?[
+      {n:"Acceleration build-ups",d:`6×20 m @ ${int}, walk-back rest — perfect low drive posture`},
+      {n:"5-0-5 change-of-direction runs",d:"4 reps @ 85% — plant hard, low hips"}
+    ]:B?[
+      {n:"Acceleration sprints",d:"6×20 m @ 95%+, 2 min rest — every rep maximal"},
+      {n:"Flying 10s",d:"3× (20 m build + 10 m flat-out), 3 min rest"},
+      {n:"5-0-5 full speed",d:"6 reps alternating sides, full recovery"}
+    ]:[
+      {n:"Flying 20s",d:"4× (20 m build + 20 m max velocity), full rest"},
+      {n:"Reactive cut sprints",d:"6× — sprint 10 m, cut on a random cue (phone timer / coin toss), burst 10 m"}
+    ];
+    const day1={title:P?"Max Velocity + Reactive Plyos":"Speed + Plyometrics",tags:["Pitch","80 min"],blocks:[
+      warmField(),
+      {label:"Sprint block — full recovery between reps",items:spr},
+      {label:`Plyometrics · ${F?"~55":B?"~85":"~90"} ground contacts`,items:plyo},
+      {label:"Ball transition work",items:[
+        {n:"Dribble-burst transitions",d:"6× — big touch out of feet, 15 m sprint to the ball, close control stop"},
+        {n:"One-touch wall passing",d:"3×30 — fast rhythm, alternate feet"}
+      ]},cool()]};
+    if(w===1){
+      day1.tags.push("TEST DAY");
+      day1.blocks.splice(1,0,{label:"Baseline tests — do these first, fully fresh",items:[
+        {n:"TEST: 20 m sprint",d:"3 attempts, log the best below"},
+        {n:"TEST: 5-0-5 change of direction",d:"2 each side, log the best"},
+        {n:"TEST: Countermovement jump",d:"3 attempts vs wall mark, log it"},
+        {n:"TEST: Max juggles + 60 s wall passes",d:"1 attempt each, log both"},
+        {n:"TEST: Yo-Yo IR1 or beep test",d:"Use a free beep-test app. Log your level. (Can move to Day 3 if too much.)"}
+      ]});
+      day1.note="<b>Week 1 rule:</b> after testing, run the rest of the session at 80% — you're grooving patterns, not chasing fatigue.";
+    }
+    if(P)day1.note="<b>Peak rule:</b> if sprint times visibly drop off, the session is over. Speed work stops when speed stops.";
+    out.push(day1);
+  }
+
+  /* ---- DAY 2: GYM LOWER + COPENHAGEN ---- */
+  const low=F?[
+    {n:"Goblet squat",d:"3×10 — 3s down, chest tall"},
+    {n:"Romanian deadlift (bar or DBs)",d:"3×10 — feel hamstrings, flat back"},
+    {n:"Split squat",d:"3×8 each leg"},
+    cph(w),
+    {n:"Nordic curl eccentric (or lying leg curl)",d:"3×5 — lower as slow as possible"},
+    {n:"Side plank + top-leg raise",d:"3×25 s each side"},
+    {n:"Standing calf raise",d:"3×15 — full stretch at bottom"}
+  ]:B?[
+    {n:"Back squat (or heavy goblet)",d:"4×6 — leave 2 reps in the tank"},
+    {n:"Romanian deadlift",d:"4×6 — heavier, perfect form"},
+    {n:"Bulgarian split squat",d:"3×8 each leg — DBs in hand"},
+    cph(w),
+    {n:"Nordic curls",d:"3×5"},
+    {n:"Pallof press + weighted side plank",d:"3×10 each side / 3×30 s"},
+    {n:"Calf raise + tibialis raise",d:"3×12 each"}
+  ]:P?[
+    {n:"Back squat — contrast set",d:"4× (3 heavy reps → rest 20 s → 3 box jumps). Full 3 min between sets"},
+    {n:"Trap-bar or Romanian deadlift",d:"3×5 fast up, controlled down"},
+    {n:"Explosive step-ups",d:"3×5 each leg — drive up violently"},
+    cph(w),
+    {n:"Nordic curls",d:"3×5"},
+    {n:"Copenhagen side-plank hold",d:"2×20 s each side"}
+  ]:[
+    {n:"Speed squat",d:"3×3 @ ~60% — maximum bar speed"},
+    {n:"Jump squats (bodyweight)",d:"3×3 — explode"},
+    cph(w),
+    {n:"Single-leg RDL, light",d:"2×8 each — balance and control"},
+    {n:"Core circuit",d:"2 rounds: dead bug ×10, plank 40 s"}
+  ];
+  out.push({title:S?"Gym — Prime, Don't Drain":P?"Gym — Peak Strength + Power":B?"Gym — Load Up + Groin Armor":"Gym — Lower Foundation + Groin Armor",
+    tags:["Gym","60–70 min"],blocks:[warmGym(),{label:"Main lifts",items:low},coolRoll()],
+    note:F&&w===1?"<b>Copenhagen soreness is normal</b> in week 1–2 — inner-thigh muscle burn, not joint pain. It fades. Sharp pinching = stop and regress.":
+        S?"<b>Week 8 gym rule:</b> leave feeling springy, never tired. You're storing energy, not spending it.":null});
+
+  /* ---- DAY 3: BALL WORK + CONDITIONING ---- */
+  if(S){
+    out.push({title:"Ball Retest + Engine Check",tags:["Pitch","70 min","TEST DAY"],blocks:[
+      warmField(),
+      {label:"Retest block",items:[
+        {n:"TEST: 60 s wall passes",d:"Two-touch, 3 m from wall. Log the count below."},
+        {n:"TEST: Max juggles",d:"Best of 3 attempts. Log it."},
+        {n:"TEST: Yo-Yo IR1 / beep test",d:"Full effort. Log your level and compare to Week 1."}
+      ]},
+      {label:"Light skill maintenance",items:[
+        {n:"Half-turn receiving",d:"2×15 off the wall — soft first touch, open body"},
+        {n:"Long passing",d:"2×8 relaxed 30 m strikes at a target"}
+      ]},cool()],
+      note:"<b>Compare every number to Week 1.</b> Wins prove the system works; misses tell you what the next 8-week block should target."});
+  } else {
+    const ball=F?[
+      {n:"Two-touch wall passing",d:"4×40 — control, pass, move your feet between reps"},
+      {n:"Weak-foot only wall passes",d:"3×30 — slow is fine, clean matters"},
+      {n:"Half-turn receiving",d:"3×20 — pass to wall, receive across your body, open up field-side"},
+      {n:"Cone slalom dribbling",d:"6 runs through 6 cones (1 m apart), both feet"},
+      {n:"Tight-box control",d:"3×2 min inside a 3×3 m square — sole rolls, V-pulls, ticktocks, head up"}
+    ]:B?[
+      {n:"One-touch wall passing",d:"4×30 fast rhythm, alternate feet"},
+      {n:"Receive → open → hit second target",d:"4×15 — wall pass, half-turn receive, pass to a second cone/target 20 m away. Scanning before every touch"},
+      {n:"Driven long passes",d:"4×8 at a target 30–40 m away — a CDM's switch of play. Laces, low trajectory"},
+      {n:"Aerial control",d:"3×10 — throw or chip the ball high, kill it with chest/thigh/foot in ≤2 touches"},
+      {n:"Defensive footwork pattern",d:"6× — backpedal 5 m → drop-step turn → sprint 10 m"}
+    ]:[
+      {n:"One-touch wall passing under fatigue",d:"3×30 immediately after each RSA set — pros pass well when tired"},
+      {n:"Switch-play sequence",d:"10× — receive off wall, open body, 40 m diagonal driven pass at target"},
+      {n:"Press-resist dribbling",d:"4×45 s in a 5×5 m box — imagine a presser, shield, turn, escape with first touch"},
+      {n:"Aerial duel prep",d:"3×8 — toss ball high, jump and head or cushion at highest point"},
+      {n:"1v1 shadow defending",d:"4×30 s — mirror an imaginary attacker: shuffle, jockey, angle the body"}
+    ];
+    const cond=F?[
+      {n:"Tempo runs",d:"2 sets of 6×100 m @ 75%, 45 s walk between reps, 3 min between sets — builds the aerobic base"}
+    ]:B?[
+      {n:"RSA: repeated sprints",d:"2 sets of 6×30 m @ 100%, only 15 s rest between reps, 3 min between sets"}
+    ]:[
+      {n:"RSA with turns",d:"2 sets of 6× (15 m out + 15 m back shuttle), 20 s rest between reps, 3 min between sets"}
+    ];
+    out.push({title:B?"Position Ball Work + RSA":P?"Game-Speed Ball Work + RSA":"Ball Foundations + Aerobic Base",
+      tags:["Pitch + wall","80 min"],blocks:[
+      warmField(),{label:"On-ball block · 35 min",items:ball},
+      {label:"Conditioning",items:cond},
+      {label:"Core finisher",items:[{n:"Dead bugs + plank + bird-dog",d:"3 rounds: ×10 / 40 s / ×8 each side"}]},cool()],
+      note:P&&w===7?"<b>Find a game this week.</b> Small-sided, futsal, pickup — anything competitive. Decision-making under chaos is the one thing solo work can't build.":null});
+  }
+
+  /* ---- DAY 4: GYM POWER + FASCIA ---- */
+  const fas=F?[
+    {n:"Jump rope",d:"3×1 min — light, bouncy, on the balls of your feet"},
+    {n:"Flowing lunges with overhead reach",d:"2×8 each side — long spiral stretch through the whole chain"},
+    {n:"Low-amplitude multidirectional bounds",d:"3×20 s — forward, lateral, diagonal, 45° — springy and quiet"},
+    {n:"Whole-body swings",d:"2×10 — arms swing loose through squat to reach, rhythmical"}
+  ]:B?[
+    {n:"Jump rope variations",d:"4×1 min — single leg, side-to-side, double-unders if you can"},
+    {n:"Rebound broad jumps",d:"3×4 — land and instantly jump again, elastic not muscular"},
+    {n:"Skipping for height / for distance",d:"4×30 m alternating — exaggerated, springy"},
+    {n:"Ninja flow",d:"3×45 s — continuous lunge–reach–hop–crawl sequence, smooth and creative"}
+  ]:[
+    {n:"Single-leg pogos",d:"3×8 each — stiff ankle springs"},
+    {n:"Sprint-float-sprint",d:"3×60 m (20 fast / 20 relaxed / 20 fast) — relaxation IS speed"},
+    {n:"Multidirectional rebound bounds",d:"3×6 — zigzag pattern, minimal ground time"},
+    {n:"Elastic skipping mix",d:"3×30 m — big, loose, rhythmic"}
+  ];
+  const pow=F?[
+    {n:"Kettlebell swings",d:"4×10 — hips snap, arms loose"},
+    {n:"DB bench press",d:"3×8"},
+    {n:"One-arm DB row",d:"3×10 each"},
+    {n:"Med-ball rotational throw (vs wall)",d:"3×6 each side"}
+  ]:B?[
+    {n:"KB swing or jump shrug",d:"5×5 — maximum hip speed"},
+    {n:"Push press",d:"4×6"},
+    {n:"Weighted pull-up or heavy row",d:"4×6"},
+    {n:"Med-ball slam + rotational throw",d:"3×6 each"}
+  ]:P?[
+    {n:"KB swing",d:"4×6 — violent hips"},
+    {n:"Push press",d:"3×5"},
+    {n:"Pull-ups",d:"3×6"},
+    {n:"Med-ball rotational throw",d:"3×5 each side — max intent"}
+  ]:[
+    {n:"KB swing",d:"3×8 smooth"},
+    {n:"Push-ups + rows",d:"2×10 each — easy"},
+  ];
+  out.push({title:S?"Elastic Flow + Program Review":"Gym Power + Fascia Elasticity",
+    tags:["Gym / open space","60–70 min"],blocks:[
+    {label:"Elastic warm-up",items:[{n:"Jump rope",d:"3 min easy bounce"},{n:"World's greatest stretch",d:"2×5 each side"}]},
+    {label:S?"Light power":"Power block",items:pow},
+    {label:"Fascia elasticity block",items:fas},
+    {label:"Second groin dose",items:[cph(w)]},
+    coolRoll()],
+    note:S?"<b>Final session.</b> Write down every retest number vs Week 1. Then decide the next block: whatever improved least becomes the next priority. Pro readiness is a moving target — keep moving.":
+    w===1?"<b>Fascia work feels easy — that's correct.</b> Elastic tissue adapts to frequency, not exhaustion. Springy and playful, every week.":null});
+
+  return out;
+}
+
+/* =============== TESTS =============== */
+const TESTS=[
+  {id:"sprint20",label:"20 m Sprint",unit:"seconds",better:"lower"},
+  {id:"cod505",label:"5-0-5 Change of Direction",unit:"seconds",better:"lower"},
+  {id:"cmj",label:"Countermovement Jump",unit:"cm",better:"higher"},
+  {id:"yoyo",label:"Yo-Yo IR1 / Beep Test",unit:"level",better:"higher"},
+  {id:"wall60",label:"60 s Wall Passes (2-touch)",unit:"count",better:"higher"},
+  {id:"juggle",label:"Max Juggles",unit:"count",better:"higher"}
+];
+
+/* =============== STATE =============== */
+const KEY="proready-v1";
+let state=JSON.parse(localStorage.getItem(KEY)||"{}");
+state.checks=state.checks||{};
+state.tests=state.tests||{};
+state.week=state.week||1;
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+
+/* Build full program once to count items */
+const PROGRAM={};
+for(let w=1;w<=8;w++)PROGRAM[w]=sessions(w);
+function exId(w,s,b,i){return `w${w}s${s}b${b}i${i}`;}
+function weekIds(w){const ids=[];PROGRAM[w].forEach((ses,s)=>ses.blocks.forEach((bl,b)=>bl.items.forEach((_,i)=>ids.push(exId(w,s,b,i)))));return ids;}
+function sesIds(w,s){const ids=[];PROGRAM[w][s].blocks.forEach((bl,b)=>bl.items.forEach((_,i)=>ids.push(exId(w,s,b,i))));return ids;}
+function doneCount(ids){return ids.filter(id=>state.checks[id]).length;}
+
+/* =============== RENDER =============== */
+const $=q=>document.querySelector(q);
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+
+function renderPhases(){
+  const ph=phaseOf(state.week);
+  $("#phaseStrip").innerHTML=PHASES.map(p=>
+    `<div class="phase ${p===ph?'active':''}"><b>${p.name}</b>${p.tag} · ${p.desc}</div>`).join("");
+}
+function renderTabs(){
+  $("#tabs").innerHTML=Array.from({length:8},(_,i)=>{
+    const w=i+1,ids=weekIds(w),full=doneCount(ids)===ids.length;
+    return `<button class="tab ${w===state.week?'on':''} ${full?'complete':''}" onclick="setWeek(${w})"><small>WK</small>${w}<span class="dot"></span></button>`;
+  }).join("");
+}
+function renderScore(){
+  let total=0,done=0;
+  for(let w=1;w<=8;w++){const ids=weekIds(w);total+=ids.length;done+=doneCount(ids);}
+  const pct=total?Math.round(done/total*100):0;
+  $("#ringPct").textContent=pct+"%";
+  $("#ringFg").style.strokeDashoffset=263.9*(1-pct/100);
+  let sesDone=0;
+  for(let w=1;w<=8;w++)PROGRAM[w].forEach((_,s)=>{const ids=sesIds(w,s);if(ids.length&&doneCount(ids)===ids.length)sesDone++;});
+  $("#sbText").textContent=sesDone>=32?"ALL 32 SESSIONS COMPLETE 🏆":`${sesDone} / 32 sessions complete`;
+  $("#weekbar").innerHTML=Array.from({length:8},(_,i)=>{
+    const ids=weekIds(i+1),p=ids.length?doneCount(ids)/ids.length:0;
+    return `<i><b style="transform:scaleX(${p})"></b></i>`;}).join("");
+}
+function renderWeek(){
+  const w=state.week,ph=phaseOf(w);
+  let html=`<div class="week-head">
+    <div class="week-title">Week <em>${w}</em> — ${ph.name}</div>
+  </div><p class="week-focus">${WEEK_FOCUS[w]}</p>`;
+  html+=PROGRAM[w].map((ses,s)=>{
+    const ids=sesIds(w,s),dc=doneCount(ids),full=dc===ids.length;
+    const open=state.openSes===`${w}-${s}`;
+    return `<div class="session ${open?'open':''} ${full?'done-card':''}">
+      <div class="s-head" onclick="toggleSes(${w},${s})">
+        <div class="s-num">D${s+1}</div>
+        <div class="s-meta">
+          <div class="s-title">${ses.title}</div>
+          <div class="s-tags">${ses.tags.map(t=>`<span class="${t==='TEST DAY'?'t-test':t.match(/Gym|Pitch|space|wall/)?'t-loc':''}">${t}</span>`).join("")}</div>
+        </div>
+        <div class="s-prog ${full?'full':''}">${full?'✓ DONE':dc+' / '+ids.length}</div>
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="s-body">
+        ${ses.blocks.map((bl,b)=>`
+          <div class="block-label">${bl.label}</div>
+          ${bl.items.map((it,i)=>{
+            const id=exId(w,s,b,i),ck=state.checks[id];
+            return `<label class="ex"><input type="checkbox" ${ck?'checked':''} onchange="tick('${id}')">
+              <span class="box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0C120D" stroke-width="4"><path d="M4 13l5 5L20 6"/></svg></span>
+              <span class="ex-text"><span class="ex-name">${esc(it.n)}</span><br><span class="ex-det">${esc(it.d)}</span></span></label>`;
+          }).join("")}`).join("")}
+        ${ses.note?`<div class="note">${ses.note}</div>`:""}
+      </div>
+    </div>`;
+  }).join("");
+  $("#weekView").innerHTML=html;
+}
+function renderTests(){
+  $("#tests").innerHTML=TESTS.map(t=>{
+    const b=state.tests[t.id+"_base"]||"",r=state.tests[t.id+"_re"]||"";
+    let delta="";
+    if(b&&r&&!isNaN(b)&&!isNaN(r)){
+      const diff=parseFloat(r)-parseFloat(b);
+      const good=t.better==="lower"?diff<0:diff>0;
+      const sign=diff>0?"+":"";
+      delta=`<div class="delta" style="color:${good?'var(--done)':diff===0?'var(--chalk-dim)':'var(--red)'}">${good?'▲ improved ':diff===0?'— even ':'▼ '} ${sign}${diff.toFixed(2)} ${t.unit}</div>`;
+    }
+    return `<div class="test"><label>${t.label} <span style="opacity:.6">(${t.unit} — ${t.better} is better)</span></label>
+      <div class="pair">
+        <input placeholder="Week 1" value="${b}" oninput="setTest('${t.id}_base',this.value)">
+        <input placeholder="Week 8" value="${r}" oninput="setTest('${t.id}_re',this.value)">
+      </div>${delta}</div>`;
+  }).join("");
+}
+
+/* =============== ACTIONS =============== */
+function setWeek(w){state.week=w;state.openSes=null;save();renderAll();window.scrollTo({top:$("#tabs").offsetTop-20,behavior:"smooth"});}
+function toggleSes(w,s){state.openSes=state.openSes===`${w}-${s}`?null:`${w}-${s}`;save();renderWeek();}
+function tick(id){state.checks[id]=!state.checks[id];save();renderWeek();renderScore();renderTabs();}
+function setTest(k,v){state.tests[k]=v;save();clearTimeout(window._tt);window._tt=setTimeout(renderTests,900);}
+function resetAll(){if(confirm("Wipe all progress and test results?")){state={checks:{},tests:{},week:1};save();renderAll();}}
+function renderAll(){renderPhases();renderTabs();renderWeek();renderScore();renderTests();}
+renderAll();
+</script>
+</body>
+</html>
