@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#0C120D"/>
+  <rect x="24" y="24" width="464" height="464" fill="none" stroke="#C8FF3E" stroke-opacity=".18" stroke-width="8"/>
+  <line x1="24" y1="256" x2="488" y2="256" stroke="#C8FF3E" stroke-opacity=".18" stroke-width="8"/>
+  <circle cx="256" cy="256" r="88" fill="none" stroke="#C8FF3E" stroke-opacity=".18" stroke-width="8"/>
+  <text x="256" y="322" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="192" font-weight="900" fill="#C8FF3E" text-anchor="middle" letter-spacing="-4">PR</text>
+</svg>

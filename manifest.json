@@ -1,0 +1,17 @@
+{
+  "name": "PRO-READY · 8-Week Football Program",
+  "short_name": "PRO-READY",
+  "description": "8-week pro readiness football training tracker — speed, strength, ball work, and groin armor.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0C120D",
+  "theme_color": "#0C120D",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
