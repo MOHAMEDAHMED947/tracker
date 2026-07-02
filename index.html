@@ -85,6 +85,11 @@ h1 .accent{color:var(--lime)}
 /* ---------- TODAY VIEW ---------- */
 .t-head{padding:calc(20px + env(safe-area-inset-top)) 0 2px}
 .t-head h1{font-size:clamp(2.3rem,9vw,3.4rem)}
+.t-head-row{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.avatar{
+  width:76px;height:76px;border-radius:50%;flex-shrink:0;object-fit:cover;
+  border:3px solid var(--lime);box-shadow:0 0 0 3px var(--pitch),0 0 22px rgba(200,255,62,.25);
+}
 .statrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0 16px}
 .stat{
   background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 6px 10px;
@@ -426,8 +431,13 @@ footer b{color:var(--chalk)}
 <!-- ================= TODAY ================= -->
 <section id="view-today" class="view" aria-label="Today">
   <header class="t-head">
-    <div class="kicker">8-Week Pro Readiness Program</div>
-    <h1>Built for<br><span class="accent">The Back Line.</span></h1>
+    <div class="t-head-row">
+      <div>
+        <div class="kicker">8-Week Pro Readiness Program</div>
+        <h1>Built for<br><span class="accent">The Back Line.</span></h1>
+      </div>
+      <img class="avatar" src="player.jpg" alt="The player in action" onerror="this.style.display='none'">
+    </div>
   </header>
 
   <div class="statrow">

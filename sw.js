@@ -1,5 +1,5 @@
 /* PRO-READY service worker — app shell cached for full offline use */
-const CACHE = "proready-cache-v1";
+const CACHE = "proready-cache-v2";
 const ASSETS = [
   "./",
   "./index.html",
@@ -7,7 +7,8 @@ const ASSETS = [
   "./icon.svg",
   "./icon-192.png",
   "./icon-512.png",
-  "./apple-touch-icon.png"
+  "./apple-touch-icon.png",
+  "./player.jpg"
 ];
 
 self.addEventListener("install", e => {
