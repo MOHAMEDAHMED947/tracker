@@ -1,5 +1,5 @@
 /* PRO-READY service worker — app shell cached for full offline use */
-const CACHE = "proready-cache-v2";
+const CACHE = "proready-cache-v3";
 const ASSETS = [
   "./",
   "./index.html",
